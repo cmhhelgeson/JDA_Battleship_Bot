@@ -25,7 +25,7 @@ public class CommandListener extends ListenerAdapter {
             game.start(channel, event.getAuthor());
         } else {
             MessageChannel channel = event.getChannel();
-            game.run(channel, event.getAuthor(), d_args[0].toLowerCase());
+            game.run(channel, event.getAuthor(), d_args);
         }
         /* if (d_args[0].toLowerCase().equals("!ping")) {
             MessageChannel channel = event.getChannel();
