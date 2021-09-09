@@ -50,7 +50,7 @@ public class Game {
         }
     }
 
-    public boolean Parse_User_Selection(MessageChannel channel, String[] input, Grid g, int ship_size) {
+    public boolean Parse_User_Selection(String[] input, Grid g, int ship_size) {
         /* Assert valid starting position */
         char_pos = input[0].toLowerCase().charAt(0) - 'a';
         num = Character.getNumericValue(input[0].charAt(1)) - 1;
@@ -119,7 +119,7 @@ public class Game {
                 }
             }
 
-            for (int i = 1; i <= ship_size - 1; i++) {
+            for (int i = 0; i <= ship_size - 1; i++) {
                 g.Update_Tile(1, char_pos, num + i);
             }
             return true;
@@ -236,7 +236,7 @@ public class Game {
                 break;
             }
             case 1: {
-                if (Parse_User_Selection(channel, input, cur_grid, 5)) {
+                if (Parse_User_Selection(input, cur_grid, 5)) {
                     output = cur_grid.Draw_Board(u);
                     channel.sendMessage(output).queue();
                     cur_grid.setup_index += 2;
@@ -260,7 +260,7 @@ public class Game {
                 }
             } break;
             case 3: {
-                if (Parse_User_Selection(channel, input, cur_grid, 4)) {
+                if (Parse_User_Selection(input, cur_grid, 4)) {
                     output = cur_grid.Draw_Board(u);
                     channel.sendMessage(output).queue();
                     cur_grid.setup_index += 2;
@@ -283,7 +283,7 @@ public class Game {
                 }
             } break;
             case 5: {
-                if (Parse_User_Selection(channel, input, cur_grid, 3)) {
+                if (Parse_User_Selection(input, cur_grid, 3)) {
                     output = cur_grid.Draw_Board(u);
                     channel.sendMessage(output).queue();
                     cur_grid.setup_index += 2;
@@ -307,7 +307,7 @@ public class Game {
 
             } break;
             case 7: {
-                if (Parse_User_Selection(channel, input, cur_grid, 3)) {
+                if (Parse_User_Selection(input, cur_grid, 3)) {
                     output = cur_grid.Draw_Board(u);
                     channel.sendMessage(output).queue();
                     cur_grid.setup_index += 2;
@@ -331,7 +331,7 @@ public class Game {
 
             } break;
             case 9: {
-                if (Parse_User_Selection(channel, input, cur_grid, 2)) {
+                if (Parse_User_Selection(input, cur_grid, 2)) {
                     output = cur_grid.Draw_Board(u);
                     channel.sendMessage(output).queue();
                     channel.sendMessage(u.getName() + " 's board has been created").queue();
