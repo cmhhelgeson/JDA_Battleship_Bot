@@ -247,15 +247,6 @@ public class Game {
                     channel.sendMessage(Create_Error_String(0)).queue();
                     channel.sendMessage(Create_Program_Request(1)).queue();
                 }
-                //Parse_Position(channel, input[0], cur_grid, 5);
-                //output = cur_grid.Draw_Board(u);
-                //channel.sendMessage(output).queue();
-                //if (cur_grid.setup_index == 1) {
-                    //channel.sendMessage(Create_Program_Request(1)).queue();
-                //} else {
-                  //  channel.sendMessage(Create_Program_Request(2)).queue();
-                //}
-
                 break;
             }
             case 2: {
@@ -280,15 +271,6 @@ public class Game {
                     channel.sendMessage(Create_Error_String(0)).queue();
                     channel.sendMessage(Create_Program_Request(3)).queue();
                 }
-                /* Parse_Position(channel, input[0].toLowerCase(), cur_grid);
-                output = cur_grid.Draw_Board(u);
-                channel.sendMessage(output).queue();
-                if (cur_grid.setup_index == 3) {
-                    channel.sendMessage(Create_Program_Request(3)).queue();
-                } else {
-                    channel.sendMessage(Create_Program_Request(4)).queue();
-                } */
-
             } break;
             case 4: {
                 Parse_Direction(channel, input[0], 4, cur_grid);
@@ -312,14 +294,6 @@ public class Game {
                     channel.sendMessage(Create_Error_String(0)).queue();
                     channel.sendMessage(Create_Program_Request(5)).queue();
                 }
-                /*Parse_Position(channel, input[0], cur_grid);
-                output = cur_grid.Draw_Board(u);
-                channel.sendMessage(output).queue();
-                if (cur_grid.setup_index == 5) {
-                    channel.sendMessage(Create_Program_Request(5)).queue();
-                } else {
-                    channel.sendMessage(Create_Program_Request(6)).queue();
-                } */
             } break;
             case 6: {
                 Parse_Direction(channel, input[0], 3, cur_grid);
@@ -344,14 +318,6 @@ public class Game {
                     channel.sendMessage(Create_Error_String(0)).queue();
                     channel.sendMessage(Create_Program_Request(7)).queue();
                 }
-                /* Parse_Position(channel, input[0], cur_grid);
-                output = cur_grid.Draw_Board(u);
-                channel.sendMessage(output).queue();
-                if (cur_grid.setup_index == 7) {
-                    channel.sendMessage(Create_Program_Request(7)).queue();
-                } else {
-                    channel.sendMessage(Create_Program_Request(8)).queue();
-                } */
             } break;
             case 8: {
                 Parse_Direction(channel, input[0], 3, cur_grid);
@@ -386,15 +352,6 @@ public class Game {
                     channel.sendMessage(Create_Error_String(0)).queue();
                     channel.sendMessage(Create_Program_Request(9)).queue();
                 }
-                /*Parse_Position(channel, input[0], cur_grid);
-                output = cur_grid.Draw_Board(u);
-                channel.sendMessage(output).queue();
-                if (cur_grid.setup_index == 9) {
-                    channel.sendMessage(Create_Program_Request(9)).queue();
-                } else {
-                    channel.sendMessage(Create_Program_Request(10)).queue();
-                } */
-
             } break;
             case 10: {
                 Parse_Direction(channel, input[0], 2, cur_grid);
@@ -415,7 +372,6 @@ public class Game {
                     } else {
                         turn++;
                     }
-
                 }
             } break;
         }
