@@ -344,6 +344,7 @@ public class Game {
                         start = true;
                         turn = 1;
                     } else {
+                        channel.sendMessage("Enter any message to continue").queue();
                         turn++;
                     }
                 } else {
