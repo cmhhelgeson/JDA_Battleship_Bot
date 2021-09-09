@@ -14,13 +14,6 @@ public class Game {
     int char_pos = -1;
     int num = -1;
 
-   /* public void New_Game(MessageChannel channel) {
-        if (!active) {
-            channel.sendMessage("Welcome to Battleship!").queue();
-            channel.sendMessage("Enter your usernames below: ").queue();
-        }
-    } */
-
     public void start(MessageChannel channel, User u) {
         if (active) {
             channel.sendMessage("Game already initialized").queue();
@@ -229,8 +222,13 @@ public class Game {
 
     public void Setup_Grid(MessageChannel channel, User u, String[] input, Grid cur_grid) {
         String output = "";
+        if (input.length < 2 && cur_grid.setup_index != 0) {
+            channel.sendMessage(Create_Error_String(0)).queue();
+            return;
+        }
         switch (cur_grid.setup_index) {
             case 0: {
+                cur_grid.user = u;
                 output = cur_grid.Draw_Board(u);
                 channel.sendMessage(output).queue();
                 channel.sendMessage(Create_Program_Request(1)).queue();
@@ -238,17 +236,14 @@ public class Game {
                 break;
             }
             case 1: {
-                output = cur_grid.Draw_Board(u);
-                channel.sendMessage(output).queue();
-                if (input.length < 2) {
-                    channel.sendMessage(Create_Error_String(0)).queue();
-                    channel.sendMessage(Create_Program_Request(1)).queue();
-                    break;
-                }
                 if (Parse_User_Selection(channel, input, cur_grid, 5)) {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
                     cur_grid.setup_index += 2;
                     channel.sendMessage(Create_Program_Request(3)).queue();
                 } else {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
                     channel.sendMessage(Create_Error_String(0)).queue();
                     channel.sendMessage(Create_Program_Request(1)).queue();
                 }
@@ -274,14 +269,25 @@ public class Game {
                 }
             } break;
             case 3: {
-                Parse_Position(channel, input[0].toLowerCase(), cur_grid);
+                if (Parse_User_Selection(channel, input, cur_grid, 4)) {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    cur_grid.setup_index += 2;
+                    channel.sendMessage(Create_Program_Request(5)).queue();
+                } else {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    channel.sendMessage(Create_Error_String(0)).queue();
+                    channel.sendMessage(Create_Program_Request(3)).queue();
+                }
+                /* Parse_Position(channel, input[0].toLowerCase(), cur_grid);
                 output = cur_grid.Draw_Board(u);
                 channel.sendMessage(output).queue();
                 if (cur_grid.setup_index == 3) {
                     channel.sendMessage(Create_Program_Request(3)).queue();
                 } else {
                     channel.sendMessage(Create_Program_Request(4)).queue();
-                }
+                } */
 
             } break;
             case 4: {
@@ -295,14 +301,25 @@ public class Game {
                 }
             } break;
             case 5: {
-                Parse_Position(channel, input[0], cur_grid);
+                if (Parse_User_Selection(channel, input, cur_grid, 3)) {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    cur_grid.setup_index += 2;
+                    channel.sendMessage(Create_Program_Request(7)).queue();
+                } else {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    channel.sendMessage(Create_Error_String(0)).queue();
+                    channel.sendMessage(Create_Program_Request(5)).queue();
+                }
+                /*Parse_Position(channel, input[0], cur_grid);
                 output = cur_grid.Draw_Board(u);
                 channel.sendMessage(output).queue();
                 if (cur_grid.setup_index == 5) {
                     channel.sendMessage(Create_Program_Request(5)).queue();
                 } else {
                     channel.sendMessage(Create_Program_Request(6)).queue();
-                }
+                } */
             } break;
             case 6: {
                 Parse_Direction(channel, input[0], 3, cur_grid);
@@ -316,14 +333,25 @@ public class Game {
 
             } break;
             case 7: {
-                Parse_Position(channel, input[0], cur_grid);
+                if (Parse_User_Selection(channel, input, cur_grid, 3)) {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    cur_grid.setup_index += 2;
+                    channel.sendMessage(Create_Program_Request(9)).queue();
+                } else {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    channel.sendMessage(Create_Error_String(0)).queue();
+                    channel.sendMessage(Create_Program_Request(7)).queue();
+                }
+                /* Parse_Position(channel, input[0], cur_grid);
                 output = cur_grid.Draw_Board(u);
                 channel.sendMessage(output).queue();
                 if (cur_grid.setup_index == 7) {
                     channel.sendMessage(Create_Program_Request(7)).queue();
                 } else {
                     channel.sendMessage(Create_Program_Request(8)).queue();
-                }
+                } */
             } break;
             case 8: {
                 Parse_Direction(channel, input[0], 3, cur_grid);
@@ -337,14 +365,35 @@ public class Game {
 
             } break;
             case 9: {
-                Parse_Position(channel, input[0], cur_grid);
+                if (Parse_User_Selection(channel, input, cur_grid, 2)) {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    channel.sendMessage(u.getName() + " 's board has been created").queue();
+                    if (turn == 2) {
+                        channel.sendMessage("Both boards created. Let the game begin").queue();
+                        channel.sendMessage("Player One's Turn").queue();
+                        channel.sendMessage("Enter a valid Tile").queue();
+                        channel.sendMessage(grid_one.Draw_Board(player_one)).queue();
+                        channel.sendMessage(grid_two.Draw_Board_Hidden()).queue();
+                        start = true;
+                        turn = 1;
+                    } else {
+                        turn++;
+                    }
+                } else {
+                    output = cur_grid.Draw_Board(u);
+                    channel.sendMessage(output).queue();
+                    channel.sendMessage(Create_Error_String(0)).queue();
+                    channel.sendMessage(Create_Program_Request(9)).queue();
+                }
+                /*Parse_Position(channel, input[0], cur_grid);
                 output = cur_grid.Draw_Board(u);
                 channel.sendMessage(output).queue();
                 if (cur_grid.setup_index == 9) {
                     channel.sendMessage(Create_Program_Request(9)).queue();
                 } else {
                     channel.sendMessage(Create_Program_Request(10)).queue();
-                }
+                } */
 
             } break;
             case 10: {
@@ -372,6 +421,21 @@ public class Game {
         }
     }
 
+    public void Run_Turn(MessageChannel channel, int letter, int num, Grid player_grid, Grid enemy_grid) {
+        String output = "";
+        if (enemy_grid.Get_Tile_Status(letter, num) != enemy_grid.OCCUPIED) {
+            enemy_grid.Update_Tile(enemy_grid.CHECKED, letter, num);
+        } else {
+            enemy_grid.Update_Tile(enemy_grid.DESTROYED, letter, num);
+        }
+        output = enemy_grid.Draw_Board(enemy_grid.user);
+        channel.sendMessage(output).queue();
+        output = "";
+        output += "Enemy's board\n";
+        output += player_grid.Draw_Board_Hidden();
+        channel.sendMessage(output).queue();
+    }
+
     public void run(MessageChannel channel, User u, String[] input) {
         String output = "";
         //Users setup their boards
@@ -390,34 +454,16 @@ public class Game {
                     channel.sendMessage("Invalid input. Try again").queue();
                     return;
                 }
-                char_pos = input[0].charAt(0) - 'a';
+                char_pos = input[0].toLowerCase().charAt(0) - 'a';
                 num = Character.getNumericValue(input[0].charAt(1)) - 1;
                 if ((char_pos < 0 || char_pos > 9) || (num < 0 || num > 9)) {
                     channel.sendMessage("Invalid input: Try again").queue();
                     return;
                 }
-                if (grid_two.Get_Tile_Status(char_pos, num) != grid_two.OCCUPIED) {
-                    grid_two.Update_Tile(grid_two.CHECKED, char_pos, num);
-                } else {
-                    grid_two.Update_Tile(grid_two.DESTROYED, char_pos, num);
-                }
-                output = "";
-                output = grid_two.Draw_Board(player_two);
-                channel.sendMessage(output).queue();
-                output = "";
-                output += "Enemy's board\n";
-                output += grid_one.Draw_Board_Hidden();
-                channel.sendMessage(output).queue();
+                Run_Turn(channel, char_pos, num, grid_one, grid_two);
                 turn++;
             } else if (turn == 2) {
-                output = "";
-                output = grid_two.Draw_Board(u);
-                channel.sendMessage(output).queue();
-                output = "";
-                output += "Enemy's board\n";
-                output += grid_one.Draw_Board_Hidden();
-                channel.sendMessage(output).queue();
-                char_pos = input[0].charAt(0) - 'a';
+                char_pos = input[0].toLowerCase().charAt(0) - 'a';
                 num = Character.getNumericValue(input[0].charAt(1)) - 1;
                 if ((char_pos < 0 || char_pos > 9) || (num < 0 || num > 9)) {
                     channel.sendMessage("Invalid input: Try again").queue();
@@ -428,13 +474,7 @@ public class Game {
                 } else {
                     grid_one.Update_Tile(grid_two.DESTROYED, char_pos, num);
                 }
-                output = "";
-                output = grid_one.Draw_Board(player_one);
-                channel.sendMessage(output).queue();
-                output = "";
-                output += "Enemy's board\n";
-                output += grid_two.Draw_Board_Hidden();
-                channel.sendMessage(output).queue();
+                Run_Turn(channel, char_pos, num, grid_two, grid_one);
                 turn = 1;
             }
 

@@ -27,6 +27,7 @@ public class Grid {
     Tile[][] grid;
     String player_emote;
     int setup_index = 0;
+    User user;
 
     public Grid() {
         this.player_emote = ":flushed:";
@@ -40,6 +41,7 @@ public class Grid {
             }
         }
         setup_index = 0;
+        user = null;
         /*for (int i = 0; i < BOARD_HEIGHT; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 grid[i][j].Set_Status(0);
