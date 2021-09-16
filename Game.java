@@ -17,6 +17,16 @@ public class Game {
     public void start(MessageChannel channel, User u) {
         if (active) {
             channel.sendMessage("Game already initialized").queue();
+            return;
+        }
+        if (Main.debug) {
+            player_one = u;
+            player_two = u;
+            active = true;
+            turn = 1;
+            grid_one = new Grid();
+            grid_two = new Grid();
+            channel.sendMessage("Let the game begin! Enter any message to start.").queue();
         }
         if (player_one == null) {
             player_one = u;
@@ -220,6 +230,25 @@ public class Game {
         return " ";
     }
 
+    public void Setup_Debug_Grid(User u, Grid cur_grid) {
+        cur_grid.user = u;
+        for (int i = 0; i < 5; i++) {
+            cur_grid.Update_Tile(cur_grid.OCCUPIED, i, 0);
+        }
+        for (int i = 0; i < 4; i++) {
+            cur_grid.Update_Tile(cur_grid.OCCUPIED, i, 1);
+        }
+        for (int i = 0; i < 3; i++) {
+            cur_grid.Update_Tile(cur_grid.OCCUPIED, i, 2);
+        }
+        for (int i = 0; i < 3; i++) {
+            cur_grid.Update_Tile(cur_grid.OCCUPIED, i, 3);
+        }
+        for (int i = 0; i < 2; i++) {
+            cur_grid.Update_Tile(cur_grid.OCCUPIED, i, 4);
+        }
+    }
+
     public void Setup_Grid(MessageChannel channel, User u, String[] input, Grid cur_grid) {
         String output = "";
         if (input.length < 2 && cur_grid.setup_index != 0) {
@@ -397,6 +426,13 @@ public class Game {
         String output = "";
         //Users setup their boards
         if (!start) {
+            if (Main.debug) {
+                Setup_Debug_Grid(u, grid_one);
+                Setup_Debug_Grid(u, grid_two);
+                start = true;
+                turn = 1;
+                channel.sendMessage("[DEBUG]: Boards created").queue();
+            }
             if (turn == 1) {
                 Setup_Grid(channel, u, input, grid_one);
             } else if (turn == 2) {

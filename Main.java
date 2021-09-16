@@ -1,5 +1,6 @@
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,8 +19,10 @@ import java.util.*;
 
 public class Main extends ListenerAdapter {
 
-    private static boolean debug = false;
+    public static boolean debug = false;
     static String prefix = "!";
+
+    private static ShardManager shard_manager;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         String token = null;
@@ -70,10 +73,37 @@ public class Main extends ListenerAdapter {
                         CacheFlag.VOICE_STATE)
         );
 
-        JDA jda = JDABuilder.createLight(token, gateway_intents).
+
+        DefaultShardManagerBuilder builder =
+                DefaultShardManagerBuilder.create(token, gateway_intents);
+        builder.setStatus(OnlineStatus.ONLINE);
+        builder.setActivity(Activity.playing("@Navy for info!"));
+        builder.addEventListeners(new CommandListener());
+        builder.disableCache(disabled_flags);
+        shard_manager = builder.build();
+        /* JDA jda = JDABuilder.createLight(token, gateway_intents).
                 addEventListeners(new CommandListener())
                 .setActivity(Activity.playing("Navy Ship")).
-                disableCache(disabled_flags).build();
+                disableCache(disabled_flags).build(); */
+
         /* Fiddle with Console Thread later */
+
+        Thread ConsoleThread = new Thread(() -> {
+            Scanner scan = new Scanner(System.in);
+            while (scan.hasNextLine()) {
+                Process_Command(scan.nextLine());
+            }
+        });
+        ConsoleThread.setDaemon(true);
+        ConsoleThread.setName("Console Thread");
+        ConsoleThread.start();
+    }
+
+    private static void Process_Command(String cmd) {
+        if (cmd.equals("debug")) {
+            debug = !debug;
+            String response = debug ? "on" : "off";
+            System.out.println("[INFO] Debug mode has been turned" + response);
+        }
     }
 }

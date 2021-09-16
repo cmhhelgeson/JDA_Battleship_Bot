@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 
 
+
 public class CommandListener extends ListenerAdapter {
 
     //Use hashmaps to associate users with separate game instances
@@ -25,7 +26,8 @@ public class CommandListener extends ListenerAdapter {
             channel.sendMessage("Goodbye!").queue();
             event.getJDA().shutdown();
             System.exit(0);
-        } else {
+        } else if (d_args[0].charAt(0) == '!') {
+            d_args[0] = d_args[0].substring(1);
             game.run(channel, event.getAuthor(), d_args);
         }
     }
